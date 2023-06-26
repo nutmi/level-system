@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "quest",
     "rest_framework",
     "djoser",
-    "rest_framework.authtoken"
+    "rest_framework.authtoken",
+    "lvl"
 
 ]
 
