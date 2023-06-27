@@ -27,14 +27,17 @@ class QuestCompliteViewSet(mixins.CreateModelMixin, GenericViewSet):
         quest_id = request.data.get("quest")
         answer = request.data.get("answer")
         quest = Quest.objects.get(id=quest_id)
-        if quest.quest_answer == answer:
-            user.gained_xp += quest.xp
-            level_info = LevelInformation.objects.first()
-            lvl = user.gained_xp // level_info.needed_xp
-            user.level += lvl
-            if lvl >= 1:
-                user.gained_xp -= level_info.needed_xp * lvl
-            user.save()
-            return super().create(request, *args, **kwargs)
+        if QuestComplite.objects.filter(quest=quest_id).exists():
+            return Response("you have already did this quest")
         else:
-            return Response("this answer is incorrect")
+            if quest.quest_answer == answer:
+                user.gained_xp += quest.xp
+                level_info = LevelInformation.objects.first()
+                lvl = user.gained_xp // level_info.needed_xp
+                user.level += lvl
+                if lvl >= 1:
+                    user.gained_xp -= level_info.needed_xp * lvl
+                user.save()
+                return super().create(request, *args, **kwargs)
+            else:
+                return Response("this answer is incorrect")
