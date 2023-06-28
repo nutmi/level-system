@@ -8,12 +8,15 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from core.models import UserProfile
 from lvl.models import LevelInformation
+
+
 # Create your views here.
 class QuestViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
     serializer_class = QuestSerializer
     queryset = Quest.objects.all()
     permission_classes = [IsAuthenticated]
     authentication_classes = [TokenAuthentication]
+
 
 class QuestCompliteViewSet(mixins.CreateModelMixin, GenericViewSet):
     serializer_class = QuestCompliteSerializer
